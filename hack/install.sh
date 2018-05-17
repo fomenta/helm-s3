@@ -10,9 +10,9 @@ echo "Downloading and installing helm-s3 v${version} ..."
 
 url=""
 if [ "$(uname)" == "Darwin" ]; then
-    url="https://github.com/hypnoglow/helm-s3/releases/download/v${version}/helm-s3_${version}_darwin_amd64.tar.gz"
+    url="https://github.com/willejs/helm-s3/releases/download/v${version}/helm-s3_${version}_darwin_amd64.tar.gz"
 elif [ "$(uname)" == "Linux" ] ; then
-    url="https://github.com/hypnoglow/helm-s3/releases/download/v${version}/helm-s3_${version}_linux_amd64.tar.gz"
+    url="https://github.com/willejs/helm-s3/releases/download/v${version}/helm-s3_${version}_linux_amd64.tar.gz"
 fi
 
 if [ -z "${url}" ]; then
