@@ -26,10 +26,10 @@ const (
 
 	helpFlagTimeout = `Timeout for the whole operation to complete. Defaults to 5 minutes.
 
-If you don't use MFA, it may be reasonable to lower the timeout 
-for the most commands, for example to 10 seconds. 
+If you don't use MFA, it may be reasonable to lower the timeout
+for the most commands, for example to 10 seconds.
 
-In opposite, in cases where you want to reindex big repository 
+In opposite, in cases where you want to reindex big repository
 (e.g. 10 000 charts), you definitely want to increase the timeout.
 `
 )
@@ -63,6 +63,8 @@ func main() {
 	initURI := initCmd.Arg("uri", "URI of repository, e.g. s3://awesome-bucket/charts").
 		Required().
 		String()
+	initACL := initCmd.Flag("acl", "Sets the ACL for the object when the chart is pushed, e.g. bucket-owner-full-control").Default("").OverrideDefaultFromEnvar("S3_ACL").
+		String()
 
 	pushCmd := cli.Command(actionPush, "Push chart to the repository.")
 	pushChartPath := pushCmd.Arg("chartPath", "Path to a chart, e.g. ./epicservice-0.5.1.tgz").
@@ -76,10 +78,14 @@ func main() {
 	repoBaseURL := pushCmd.Flag("base-url", "the base url of the chart packages that are published").
 		Default("").
 		String()
+	pushACL := pushCmd.Flag("acl", "Sets the ACL for the object when the chart is pushed, e.g. bucket-owner-full-control").Default("").OverrideDefaultFromEnvar("S3_ACL").
+		String()
 
 	reindexCmd := cli.Command(actionReindex, "Reindex the repository.")
 	reindexTargetRepository := reindexCmd.Arg("repo", "Target repository to reindex").
 		Required().
+		String()
+	reindexACL := reindexCmd.Flag("acl", "Sets the ACL for the object when the chart is pushed, e.g. bucket-owner-full-control").Default("").OverrideDefaultFromEnvar("S3_ACL").
 		String()
 
 	deleteCmd := cli.Command(actionDelete, "Delete chart from the repository.").Alias("del")
@@ -91,6 +97,8 @@ func main() {
 		String()
 	deleteTargetRepository := deleteCmd.Arg("repo", "Target repository to delete from").
 		Required().
+		String()
+	deleteACL := deleteCmd.Flag("acl", "Sets the ACL for the object when the chart is pushed, e.g. bucket-owner-full-control").Default("").OverrideDefaultFromEnvar("S3_ACL").
 		String()
 
 	action := kingpin.MustParse(cli.Parse(os.Args[1:]))
@@ -108,6 +116,7 @@ func main() {
 	case actionInit:
 		act = initAction{
 			uri: *initURI,
+			acl: *initACL,
 		}
 		defer fmt.Printf("Initialized empty repository at %s\n", *initURI)
 
@@ -117,6 +126,7 @@ func main() {
 			repoName:    *pushTargetRepository,
 			force:       *pushForce,
 			repoBaseURL: *repoBaseURL,
+			acl:       *pushACL,
 		}
 
 	case actionReindex:
@@ -124,6 +134,7 @@ func main() {
 		act = reindexAction{
 			repoName:    *reindexTargetRepository,
 			repoBaseURL: *repoBaseURL,
+			acl:      	 *reindexACL,
 		}
 		defer fmt.Printf("Repository %s was successfully reindexed.\n", *reindexTargetRepository)
 
@@ -132,6 +143,7 @@ func main() {
 			name:     *deleteChartName,
 			version:  *deleteChartVersion,
 			repoName: *deleteTargetRepository,
+			acl:      *deleteACL,
 		}
 	default:
 		return
