@@ -25,9 +25,11 @@ var (
 )
 
 type pushAction struct {
-	chartPath string
-	repoName  string
-	force     bool
+	chartPath   string
+	repoName    string
+	force       bool
+	repoBaseURL string
+	acl       string
 }
 
 func (act pushAction) Run(ctx context.Context) error {
@@ -93,7 +95,7 @@ func (act pushAction) Run(ctx context.Context) error {
 		return ErrChartExists
 	}
 
-	if _, err := storage.PutChart(ctx, repoEntry.URL+"/"+fname, fchart, string(serializedChartMeta), hash); err != nil {
+	if _, err := storage.PutChart(ctx, repoEntry.URL+"/"+fname, fchart, string(serializedChartMeta), act.acl, hash); err != nil {
 		return errors.WithMessage(err, "upload chart to s3")
 	}
 
@@ -113,7 +115,15 @@ func (act pushAction) Run(ctx context.Context) error {
 		return errors.WithMessage(err, "load index from downloaded file")
 	}
 
-	if err := idx.AddOrReplace(chart.GetMetadata(), fname, repoEntry.URL, hash); err != nil {
+	// if you have a public repository, you might want to set chart base url to the s3 buckets website address
+	var repoBaseURL string
+	if act.repoBaseURL == "" {
+		repoBaseURL = repoEntry.URL
+	} else {
+		repoBaseURL = act.repoBaseURL
+	}
+
+	if err := idx.AddOrReplace(chart.GetMetadata(), fname, repoBaseURL, hash); err != nil {
 		return errors.WithMessage(err, "add/replace chart in the index")
 	}
 	idx.SortEntries()
@@ -123,7 +133,7 @@ func (act pushAction) Run(ctx context.Context) error {
 		return errors.WithMessage(err, "get index reader")
 	}
 
-	if err := storage.PutIndex(ctx, repoEntry.URL, idxReader); err != nil {
+	if err := storage.PutIndex(ctx, repoEntry.URL, act.acl, idxReader); err != nil {
 		return errors.WithMessage(err, "upload index to s3")
 	}
 
