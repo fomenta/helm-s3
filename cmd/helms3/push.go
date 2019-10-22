@@ -12,10 +12,10 @@ import (
 	"k8s.io/helm/pkg/provenance"
 	"k8s.io/helm/pkg/repo"
 
-	"github.com/hypnoglow/helm-s3/internal/awss3"
-	"github.com/hypnoglow/helm-s3/internal/awsutil"
-	"github.com/hypnoglow/helm-s3/internal/helmutil"
-	"github.com/hypnoglow/helm-s3/internal/index"
+	"github.com/fomenta/helm-s3/internal/awss3"
+	"github.com/fomenta/helm-s3/internal/awsutil"
+	"github.com/fomenta/helm-s3/internal/helmutil"
+	"github.com/fomenta/helm-s3/internal/index"
 )
 
 var (
@@ -133,7 +133,7 @@ func (act pushAction) Run(ctx context.Context) error {
 
 	// The gap between index fetching and uploading should be as small as
 	// possible to make the best effort to avoid race conditions.
-	// See https://github.com/hypnoglow/helm-s3/issues/18 for more info.
+	// See https://github.com/fomenta/helm-s3/issues/18 for more info.
 
 	// Fetch current index, update it and upload it back.
 

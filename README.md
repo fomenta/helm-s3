@@ -1,13 +1,13 @@
 # helm-s3
 
-Fork of https://circleci.com/gh/hypnoglow/helm-s3
+Fork of https://circleci.com/gh/fomenta/helm-s3
 It includes an AWS SDK update so that it takes AWS_PROFILE environment variable.
 
 Original File
 
-[![CircleCI](https://circleci.com/gh/hypnoglow/helm-s3.svg?style=shield)](https://circleci.com/gh/hypnoglow/helm-s3)
+[![CircleCI](https://circleci.com/gh/fomenta/helm-s3.svg?style=shield)](https://circleci.com/gh/fomenta/helm-s3)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
-[![GitHub release](https://img.shields.io/github/release/hypnoglow/helm-s3.svg)](https://github.com/hypnoglow/helm-s3/releases)
+[![GitHub release](https://img.shields.io/github/release/fomenta/helm-s3.svg)](https://github.com/fomenta/helm-s3/releases)
 
 The Helm plugin that provides s3 protocol support.
 
@@ -22,10 +22,10 @@ The installation itself is simple as:
 
 You can install a specific release version:
 
-    $ helm plugin install https://github.com/hypnoglow/helm-s3.git --version 0.7.0
+    $ helm plugin install https://github.com/fomenta/helm-s3.git --version 0.8.1
 
 To use the plugin, you do not need any special dependencies. The installer will
-download versioned release with prebuilt binary from [github releases](https://github.com/hypnoglow/helm-s3/releases).
+download versioned release with prebuilt binary from [github releases](https://github.com/fomenta/helm-s3/releases).
 However, if you want to build the plugin from source, or you want to contribute
 to the plugin, please see [these instructions](.github/CONTRIBUTING.md).
 
@@ -196,7 +196,7 @@ and others. To configure the plugin to work alternative S3 backend, just define
     $ export AWS_ENDPOINT=localhost:9000
     $ export AWS_DISABLE_SSL=true
 
-See [these integration tests](https://github.com/hypnoglow/helm-s3/blob/master/hack/integration-tests-local.sh#L10) that use local minio docker container for a complete example.
+See [these integration tests](https://github.com/fomenta/helm-s3/blob/master/hack/integration-tests-local.sh#L10) that use local minio docker container for a complete example.
 
 ## Using S3 bucket ServerSide Encryption
 

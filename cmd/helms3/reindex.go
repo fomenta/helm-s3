@@ -5,10 +5,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/hypnoglow/helm-s3/internal/awss3"
-	"github.com/hypnoglow/helm-s3/internal/awsutil"
-	"github.com/hypnoglow/helm-s3/internal/helmutil"
-	"github.com/hypnoglow/helm-s3/internal/index"
+	"github.com/fomenta/helm-s3/internal/awss3"
+	"github.com/fomenta/helm-s3/internal/awsutil"
+	"github.com/fomenta/helm-s3/internal/helmutil"
+	"github.com/fomenta/helm-s3/internal/index"
 )
 
 type reindexAction struct {
