@@ -1,5 +1,10 @@
 # helm-s3
 
+Fork of https://circleci.com/gh/hypnoglow/helm-s3
+It includes an AWS SDK update so that it takes AWS_PROFILE environment variable.
+
+Original File
+
 [![CircleCI](https://circleci.com/gh/hypnoglow/helm-s3.svg?style=shield)](https://circleci.com/gh/hypnoglow/helm-s3)
 [![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![GitHub release](https://img.shields.io/github/release/hypnoglow/helm-s3.svg)](https://github.com/hypnoglow/helm-s3/releases)
@@ -13,7 +18,7 @@ written by [@andrewlock](https://github.com/andrewlock) to get a detailed use ca
 
 The installation itself is simple as:
 
-    $ helm plugin install https://github.com/hypnoglow/helm-s3.git
+    $ helm plugin install https://github.com/fomenta/helm-s3
 
 You can install a specific release version:
 
