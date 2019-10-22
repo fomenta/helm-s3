@@ -7,7 +7,7 @@ jobs:
   dep:
     docker:
       - image: circleci/golang:1.9
-    working_directory: /go/src/github.com/hypnoglow/helm-s3
+    working_directory: /go/src/github.com/fomenta/helm-s3
     steps:
       - checkout
       - run:
@@ -16,16 +16,16 @@ jobs:
             chmod +x /go/bin/dep
       - run: dep ensure -v -vendor-only
       - persist_to_workspace:
-          root: /go/src/github.com/hypnoglow
+          root: /go/src/github.com/fomenta
           paths:
             - helm-s3
   test-unit:
     docker:
       - image: circleci/golang:1.10
-    working_directory: /go/src/github.com/hypnoglow/helm-s3
+    working_directory: /go/src/github.com/fomenta/helm-s3
     steps:
       - attach_workspace:
-          at: /go/src/github.com/hypnoglow
+          at: /go/src/github.com/fomenta
       - run: ./.circleci/testcover.sh
       - run: bash <(curl -s https://codecov.io/bash)
   test-integration-and-e2e:
@@ -44,10 +44,10 @@ jobs:
           MINIO_ACCESS_KEY: EXAMPLEKEY123
           MINIO_SECRET_KEY: EXAMPLESECRET123456
         command: ["server", "/data"]
-    working_directory: /go/src/github.com/hypnoglow/helm-s3
+    working_directory: /go/src/github.com/fomenta/helm-s3
     steps:
       - attach_workspace:
-          at: /go/src/github.com/hypnoglow
+          at: /go/src/github.com/fomenta
       - run:
           name: Build the plugin
           command: go build -o bin/helms3 ./cmd/helms3
@@ -58,7 +58,7 @@ jobs:
             mv linux-amd64/helm ${GOPATH}/bin/helm
             rm -rf linux-amd64
             helm init --client-only
-            HELM_S3_PLUGIN_NO_INSTALL_HOOK=true helm plugin install ${GOPATH}/src/github.com/hypnoglow/helm-s3
+            HELM_S3_PLUGIN_NO_INSTALL_HOOK=true helm plugin install ${GOPATH}/src/github.com/fomenta/helm-s3
       - run:
           name: Install minio client, prepare minio
           command: |
@@ -100,14 +100,14 @@ jobs:
             fi
 
             echo "Check installation of version ${version}"
-            helm plugin install https://github.com/hypnoglow/helm-s3.git --version ${version}
+            helm plugin install https://github.com/fomenta/helm-s3.git --version ${version}
   release:
     docker:
       - image: circleci/golang:1.9
-    working_directory: /go/src/github.com/hypnoglow/helm-s3
+    working_directory: /go/src/github.com/fomenta/helm-s3
     steps:
       - attach_workspace:
-          at: /go/src/github.com/hypnoglow
+          at: /go/src/github.com/fomenta
       - deploy:
           name: goreleaser
           command: |
